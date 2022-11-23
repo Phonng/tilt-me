@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react'
+
+import VanillaTilt from 'vanilla-tilt'
+
+function Tilt({children}) {
+	const tiltRef = React.useRef(null)
+	console.log(tiltRef);
+
+	React.useEffect(() => {
+    const {current: tiltNode} = tiltRef
+    const vanillaTiltOptions = {
+      max: 25,
+      speed: 400,
+      glare: true,
+      'max-glare': 0.5,
+    }
+    VanillaTilt.init(tiltNode, vanillaTiltOptions)
+    return () => tiltNode.vanillaTilt.destroy()
+  }, [])
+	
+  return (
+    <div ref={tiltRef} className="tilt-root">
+      <div className="tilt-child">{children}</div>
+    </div>
+  )
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Tilt>
+      <div className="totally-centered">tilt me</div>
+    </Tilt>
+  )
 }
 
-export default App;
+export default App
